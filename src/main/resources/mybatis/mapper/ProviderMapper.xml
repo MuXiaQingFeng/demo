@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanser.mapper.provider.ProviderMapper">
+
+    <select id="login" resultType="provider">
+        select *
+        from provider
+        where provider_code = #{code}
+    </select>
+
+    <insert id="register">
+        insert into provider (provider_code, provider_password,provider_status)
+        values (#{code}, #{password},1)
+    </insert>
+
+    <update id="updatePassword">
+        update provider
+        set provider_password = #{password}
+        where id = #{id}
+    </update>
+
+    <select id="getProviderById" resultType="provider">
+        select *
+        from provider
+        where id = #{pid}
+    </select>
+
+    <update id="updateProvider" parameterType="provider">
+        update provider
+        set provider_status=1,
+            provider_name=#{providerName},
+            fax=#{fax},
+            registration_number=#{registrationNumber},
+            phone=#{phone},
+            email=#{email},
+            bank_name=#{bankName},
+            bank_id=#{bankId},
+            bank_level=#{bankLevel},
+            is_bank_guarantee=#{isBankGuarantee},
+            bank_contact=#{bankContact},
+            duty_paragraph=#{dutyParagraph},
+            contacts=#{contacts},
+            contact_phone=#{contactPhone},
+            registered_address=#{registeredAddress},
+            registered_postcode=#{registeredPostcode},
+            postal_address=#{postalAddress},
+            postal_postcode=#{postalPostcode},
+            legal_person=#{legalPerson},
+            homepage=#{homepage},
+            registered_capital=#{registeredCapital},
+            wharf_conditions=#{wharfConditions},
+            creation_date=#{creationDate},
+            ownership=#{ownership},
+            people_number=#{peopleNumber},
+            business_scope=#{businessScope},
+            provider_nature=#{providerNature},
+            company_nature=#{companyNature},
+            is_ISO9001=#{isISO9001},
+            is_ISO14001=#{isISO14001},
+            licence=#{licence}
+        where id = #{id}
+    </update>
+
+
+    <select id="getOrder" resultMap="orderMap">
+        select o.order_name    oname,
+               o.id            oid,
+               o.num           onum,
+               o.end_date      oe,
+               p.provider_name pname
+        from provider p
+                 left join offer_report r on p.id = r.provider_id
+                 left join `order` o on o.id = r.order_id
+        where p.id = #{pid}
+          and r.provider_status = 2
+          and order_name like "%"#{orderName}"%"
+    </select>
+
+    <resultMap id="orderMap" type="provider">
+        <result column="pname" property="providerName"/>
+        <collection property="orderList" ofType="order">
+            <result property="orderName" column="oname"/>
+            <result property="id" column="oid"/>
+            <result property="num" column="onum"/>
+            <result property="endDate" column="oe"/>
+        </collection>
+    </resultMap>
+
+    <update id="updateReport">
+        update offer_report
+        set price           = #{price},
+            supply_date     = #{supplyDate},
+            provider_status = 3
+        where order_id = #{orderId}
+          and provider_id = #{providerId}
+    </update>
+
+    <select id="getProviderList" resultType="provider">
+        select id, provider_name, provider_code, provider_password, provider_status, fax, registration_number,
+               phone, email, bank_name, bank_id, bank_level, is_bank_guarantee, bank_contact, duty_paragraph,
+               contacts, registered_address, registered_postcode, postal_address, postal_postcode, legal_person,
+               homepage, registered_capital, wharf_conditions, creation_date, ownership, people_number,
+               business_scope, provider_nature, company_nature, is_ISO9001, is_ISO14001, licence,
+               advice, contact_phone
+        from provider
+    </select>
+
+
+</mapper>

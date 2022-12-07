@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanser.mapper.leader.LeaderMapper">
+
+    <select id="getOrderList" resultType="order">
+        select *
+        from `order`
+        <where>
+            is_up5 = 1
+            and order_status = 4
+            <if test="count == 0">
+                and department_id in (1,2,3,4)
+            </if>
+            <if test="count == 1">
+                and department_id in (5,6)
+            </if>
+            <if test="orderName != null">
+                and order_name like "%"#{orderName}"%"
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getOrder" resultMap="orderMap">
+        select o.order_name    oname,
+               o.id            oid,
+               p.id            pid,
+               p.provider_name pname,
+               r.price         price,
+               r.supply_date   supplyDate
+        from `order` o
+                 left join offer_report r on o.id = r.order_id
+                 left join provider p on p.id = r.provider_id
+        where o.id = #{oid}
+    </select>
+
+    <resultMap id="orderMap" type="order">
+        <result property="id" column="oid"/>
+        <result property="orderName" column="oname"/>
+        <collection property="providerList" ofType="provider">
+            <result property="providerName" column="pname"/>
+            <result property="id" column="pid"/>
+            <result property="price" column="price"/>
+            <result property="supplyDate" column="supplyDate"/>
+        </collection>
+    </resultMap>
+
+    <select id="getCompareReport" resultType="string">
+        select price_parity
+        from `order`
+        where id = #{id}
+    </select>
+
+    <select id="getReport" resultType="report">
+        select *
+        from offer_report
+        where order_id = #{oid}
+          and provider_id = #{pid};
+    </select>
+
+    <update id="updateOrder" parameterType="report">
+        update `order`
+        set provider_id = #{providerId},
+            quality     = '寰堝ソ',
+            price       = #{price},
+            end_date    = #{supplyDate}
+        where id = #{orderId}
+    </update>
+
+    <delete id="deleteRecord">
+        delete
+        from offer_report
+        where order_id = #{oid}
+    </delete>
+
+    <update id="updateProviderStatus">
+        update offer_report
+        set provider_status = 4
+        where provider_id = #{pid}
+          and order_id = #{oid}
+    </update>
+
+    <update id="updateOrderStatus">
+        update `order`
+        set order_status = #{orderStatus}
+        where id = #{oid}
+    </update>
+
+    <select id="getOrders" resultType="order">
+        select *
+        from `order`
+        where year(end_date) = year(now())
+        and order_status = #{orderStatus}
+        <if test="count == 0">
+            and department_id in (1,2,3,4)
+        </if>
+        <if test="count == 1">
+            and department_id in (5,6)
+        </if>
+        <if test="count == 2">
+            and department_id = #{departmentId}
+        </if>
+    </select>
+
+
+    <update id="updateProStatus">
+        update provider
+        set provider_status = 0
+        where id = #{pid}
+    </update>
+
+    <delete id="deleteProvider">
+        delete
+        from provider
+        where id = #{pid}
+    </delete>
+
+</mapper>

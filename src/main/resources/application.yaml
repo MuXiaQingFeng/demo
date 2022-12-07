@@ -1,0 +1,20 @@
+server:
+  port: 8099
+
+spring:
+  datasource:
+    username: "worker4"
+    password: "010217"
+    url: jdbc:mysql://101.43.167.124:3306/work?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 整合mybatis
+mybatis:
+  type-aliases-package: com.hanser.pojo
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cacheEnabled: true
+
+

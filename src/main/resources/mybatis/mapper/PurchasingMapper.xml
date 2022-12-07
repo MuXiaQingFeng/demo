@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanser.mapper.purchasing.PurchasingMapper">
+    <select id="getProvider1" resultType="provider">
+        select * from provider
+        <where>
+            <if test="name != null">
+                provider_name like "%"#{name}"%"
+            </if>
+            <if test="status != null">
+                and provider_status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateProviderStatus1">
+        update provider
+        set provider_status = #{providerStatus}
+        where id = #{pid}
+    </update>
+
+    <delete id="deleteProvider">
+        delete
+        from provider
+        where id = #{pid}
+    </delete>
+
+    <insert id="addOrder" parameterType="map">
+        insert into `order` (department_id, order_name, type, num, is_up5, creation_date, by_date)
+        values (#{did}, #{orderName}, #{type}, #{num}, #{isUp5}, now(), #{byDate})
+    </insert>
+
+    <select id="getOrderList" parameterType="map" resultType="order">
+        select *
+        from `order`
+        <where>
+            <if test="orderName != null">
+                order_name like "%"#{orderName}"%"
+            </if>
+            <if test="isUp != null">
+                and is_up5 = #{isUp}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus}
+            </if>
+            <if test="departmentId != null">
+                and department_id = #{departmentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getProvider2" resultType="int">
+        select id
+        from provider
+        where business_scope like "%"#{type}"%";
+    </select>
+
+
+
+    <insert id="addRecord">
+        insert into offer_report (order_id, provider_id,provider_status)
+        values
+        <foreach collection="providerList" item="pid" separator=",">
+            (#{oid},#{pid},0)
+        </foreach>
+    </insert>
+
+    <delete id="deleteRecord">
+        delete
+        from offer_report
+        where order_id = #{oid}
+    </delete>
+
+    <select id="getOrder" resultMap="orderMap">
+        select o.order_name oname,
+        p.id pid,
+        p.provider_name pname,
+        r.price price,
+        r.supply_date supplyDate
+        from `order` o
+        left join offer_report r on o.id = r.order_id
+        left join provider p on p.id = r.provider_id
+        where o.id = #{oid}
+        <if test="providerStatus != null">
+            and r.provider_status = #{providerStatus}
+        </if>
+        <if test="providerName != null">
+            and p.provider_name like "%"#{providerName}"%"
+        </if>
+    </select>
+
+    <resultMap id="orderMap" type="order">
+        <result property="orderName" column="oname"/>
+        <collection property="providerList" ofType="provider">
+            <result property="providerName" column="pname"/>
+            <result property="id" column="pid"/>
+            <result property="price" column="price"/>
+            <result property="supplyDate" column="supplyDate"/>
+        </collection>
+    </resultMap>
+
+    <update id="updateProviderStatus2">
+        update offer_report
+        set provider_status = #{providerStatus}
+        <if test="reason != null">
+            ,nomination_reason = #{reason}
+        </if>
+        where order_id = #{oid}
+        and provider_id = #{pid}
+    </update>
+
+    <update id="updateOrderStatus">
+        update `order`
+        set order_status = #{orderStatus}
+        where id = #{oid}
+    </update>
+
+    <update id="updateDraw" parameterType="map">
+        update offer_report set provider_status = 2
+        <where>
+            order_id = #{oid} and
+            <foreach collection="drawList" item="draw" open="(" close=")" separator="or">
+                provider_id = #{draw}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="updatePriceParity">
+        update `order`
+        set price_parity = #{priceParity}
+        where id = #{oid}
+    </update>
+
+
+    <select id="getCompareReport" resultType="string">
+        select price_parity
+        from `order`
+        where id = #{oid};
+    </select>
+
+    <select id="getReport" resultType="report">
+        select *
+        from offer_report
+        where order_id = #{oid}
+          and provider_id = #{pid};
+    </select>
+
+    <update id="updateOrder" parameterType="report">
+        update `order`
+        set provider_id = #{providerId},
+            quality     = '很好',
+            price       = #{price},
+            end_date    = #{supplyDate}
+        where id = #{orderId}
+    </update>
+
+    <select id="getOrders" resultType="order">
+        select *
+        from `order`
+        where year(end_date) = year(now())
+          and order_status = 5
+          and department_id = #{did}
+    </select>
+
+    <update id="updateAssess">
+        update `order`
+        set year_advice = #{yearAdvice}
+        where id = #{oid}
+    </update>
+
+
+</mapper>

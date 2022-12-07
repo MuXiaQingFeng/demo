@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanser.mapper.project.ProjectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ProjectMap" type="project">
+        <result column="id" property="id" />
+        <result column="project_code" property="projectCode" />
+        <result column="project_name" property="projectName" />
+        <result column="price" property="price" />
+        <result column="amount" property="amount" />
+        <result column="provider_id" property="providerId" />
+        <result column="provider_code" property="providerCode" />
+        <result column="provider_name" property="providerName" />
+        <result column="creation_date" property="creationDate" />
+        <result column="by_date" property="byDate" />
+        <result column="end_date" property="endDate" />
+        <result column="order_id" property="orderId" />
+        <result column="order_name" property="orderName" />
+        <result column="order_status" property="orderStatus" />
+        <result column="staff_id" property="staffId" />
+        <result column="staff_code" property="staffCode" />
+    </resultMap>
+
+    <update id="updateProject" parameterType="project">
+        update `project`
+        set project_code = #{search.projectCode},
+            project_name = #{search.projectName},
+            price       = #{search.price},
+            amount = #{search.amount},
+            provider_id = #{search.providerId},
+            provider_code = #{search.providerCode},
+            provider_name = #{search.providerName},
+            creation_date = now(),
+            by_date = #{search.byDate},
+            end_date = #{search.endDate},
+            order_id = #{search.orderId},
+            order_name = #{search.orderName},
+            order_status = #{search.orderStatus},
+            staff_id = #{search.staffId},
+            staff_code = #{search.staffCode},
+            department_id = #{search.departmentId}
+        where id = #{search.id}
+    </update>
+
+    <insert id="addProject" parameterType="project">
+        insert into work.project (project_code, project_name, price, amount, provider_id, provider_code, provider_name, creation_date, by_date,
+                                  end_date, order_id, order_name, order_status, staff_id, staff_code, department_id)
+        values (#{search.projectCode}, #{search.projectName}, #{search.price}, #{search.amount}, #{search.providerId}, #{search.providerCode}, #{search.providerName}, now()
+               , #{search.byDate}, #{search.endDate}, #{search.orderId}, #{search.orderName}, #{search.orderStatus}, #{search.staffId}, #{search.staffCode}
+               , #{search.departmentId})
+    </insert>
+
+    <delete id="deleteProject">
+        delete
+        from project
+        where id = #{id}
+    </delete>
+
+    <select id="getProjectList" resultType="project">
+        select pro.id,
+        pro.project_code,
+        pro.project_name,
+        pro.price,
+        pro.amount,
+        pro.provider_id,
+        pro.provider_code,
+        pro.provider_name,
+        pro.creation_date,
+        pro.by_date,
+        pro.end_date,
+        pro.order_id,
+        pro.order_name,
+        pro.order_status,
+        pro.staff_id,
+        pro.staff_code,
+        pro.department_id
+        from project pro
+        left join staff stf on pro.staff_id = stf.id
+        left join `order` ord on pro.order_id = ord.id
+        left join provider pvd on pro.provider_id = pvd.id
+        where 1=1
+        <if test="search.projectName!=null and search.projectName!=''">
+            AND pro.project_name like concat('%', #{search.projectName}, '%')
+        </if>
+        <if test="search.departmentId!=null and search.departmentId!=''">
+            AND  pro.department_id = #{search.departmentId}
+        </if>
+        GROUP BY pro.id
+    </select>
+</mapper>

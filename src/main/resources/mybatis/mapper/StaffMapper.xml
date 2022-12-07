@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanser.mapper.staff.StaffMapper">
+    <select id="login"  resultType="staff">
+        select *
+        from staff s left join department d on d.id = s.department_id
+        where staff_code = #{code};
+    </select>
+
+    <select id="getStaff" resultType="staff">
+        select *
+        from staff
+    </select>
+
+    <select id="getStaffById" resultType="staff">
+        select *
+        from staff where id = #{id}
+    </select>
+
+    <update id="updateStaff" parameterType="staff">
+        update work.staff
+        set staff_code=#{code},
+            staff_password=#{password}
+            where id = #{id}
+    </update>
+    <insert id="addStaff" parameterType="staff">
+        insert into work.staff (staff_code, staff_password)
+        values (#{staffCode}, #{staffPassword})
+    </insert>
+    <delete id="deleteStaffById">
+        delete
+        from work.staff
+        where id = #{id}
+    </delete>
+
+</mapper>
