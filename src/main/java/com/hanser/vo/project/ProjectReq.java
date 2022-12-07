@@ -63,18 +63,6 @@ public class ProjectReq {
      */
     private String endDate;
     /**
-     * 合同编号id
-     */
-    private String orderId;
-    /**
-     * 合同编号
-     */
-    private String orderName;
-    /**
-     * 合同状态
-     */
-    private String orderStatus;
-    /**
      * 管理员code
      */
     private String staffCode;

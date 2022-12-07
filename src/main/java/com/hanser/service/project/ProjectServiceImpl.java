@@ -2,7 +2,6 @@ package com.hanser.service.project;
 
 import com.hanser.mapper.project.ProjectMapper;
 import com.hanser.mapper.provider.ProviderMapper;
-import com.hanser.mapper.purchasing.PurchasingMapper;
 import com.hanser.mapper.staff.StaffMapper;
 import com.hanser.pojo.Project;
 import com.hanser.pojo.Provider;
@@ -27,8 +26,6 @@ public class ProjectServiceImpl implements ProjectService {
     StaffMapper staffMapper;
     @Resource
     ProviderMapper providerMapper;
-    @Resource
-    PurchasingMapper purchasingMapper;
 
     @Override
     public boolean addProject(ProjectReq search) {
