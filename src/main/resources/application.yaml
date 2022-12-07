@@ -7,6 +7,10 @@ spring:
     password: "010217"
     url: jdbc:mysql://101.43.167.124:3306/work?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB  #单次上传文件最大不超过10MB
+      max-request-size: 100MB  #文件总上传大小不超过100MB
 
 # 整合mybatis
 mybatis:
