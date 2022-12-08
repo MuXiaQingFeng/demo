@@ -1,5 +1,7 @@
 package com.hanser.service.project;
 
+import com.hanser.Enum.ProviderEnum;
+import com.hanser.exception.ProviderException;
 import com.hanser.mapper.file.FileMapper;
 import com.hanser.mapper.project.ProjectMapper;
 import com.hanser.mapper.provider.ProviderMapper;
@@ -41,6 +43,8 @@ public class ProjectServiceImpl implements ProjectService {
             Provider provider = providerMapper.getProviderById(Integer.parseInt(search.getProviderId()));
             search.setProviderCode(provider.getProviderCode());
             search.setProviderName(provider.getProviderName());
+        } else {
+            throw new ProviderException(ProviderEnum.PROVIDER_ID_NOT_EXIST);
         }
         if (!(search.getStaffId()==0)) {
             Staff staff = staffMapper.getStaffById(search.getStaffId());
