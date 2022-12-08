@@ -1,5 +1,7 @@
 package com.hanser.service.file.impl;
 
+import com.hanser.Enum.ResultEnum;
+import com.hanser.exception.FileException;
 import com.hanser.mapper.file.FileMapper;
 import com.hanser.pojo.FileUploadEntity;
 import com.hanser.service.file.FileUploadService;
@@ -41,7 +43,8 @@ public class FileUploadServiceImpl implements FileUploadService {
         uploadEntity.setCreateTime(new Date());
         uploadEntity.setUpdateTime(new Date());
         uploadEntity.setOldName(file.getOriginalFilename());        //这边可以根据业务修改，项目中不要写死
-        uploadEntity.setName("上传模板");
+        uploadEntity.setName("" + uploadEntity.getId());
+        String name = "" + uploadEntity.getId();
         String fileLocation = null ;
         if(baseDir != null) {
             fileLocation = FileUploadUtils.upload(baseDir, file);
@@ -60,16 +63,26 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     @Override
-    public void download(HttpServletResponse response, String newName) throws IOException {
+    public void download(HttpServletResponse response, int id) throws IOException {
         FileReq fileReq = new FileReq();
-        fileReq.setName(newName);
+        fileReq.setId(id);
         List<FileUploadEntity> uploadEntityList = uploadMapper.selectList(fileReq);
 
         FileUploadEntity uploadEntity = uploadEntityList.size() > 0 ? uploadEntityList.get(0):null;
-
+        if (uploadEntity == null ) {
+            throw new FileException(ResultEnum.FILE_NOT_EXIST);
+        }
         response.setHeader("content-type", "application/octet-stream");
         response.setContentType("application/octet-stream");        //这边可以设置文件下载时的名字，我这边用的是文件原本的名字，可以根据实际场景设置
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(uploadEntity.getOldName(), "UTF-8"));
         FileUtils.writeBytes(uploadEntity.getLocation(), response.getOutputStream());
+    }
+
+    @Override
+    public List<FileUploadEntity> getFileList(FileReq search) {
+        if (search.getId()==0&&(search.getName()==null||search.getName().equals(""))&&(search.getOldName()==null||search.getOldName().equals(""))) {
+            return null;
+        }
+        return uploadMapper.selectList(search);
     }
 }

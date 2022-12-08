@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class FileReq {
 
-    private Long id;
+    private int id;
 
     //存在本地的地址
     private String location;

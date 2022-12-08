@@ -1,11 +1,13 @@
 package com.hanser.util;
 
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +26,8 @@ public class FileUploadUtils {
     /**
      * 默认上传的地址
      */
-    private static String DEFAULT_BASE_FILE = "D:\\personalCode\\activemq-learn\\file-upload-learn\\src\\main\\resources\\upload";
+    private static String DEFAULT_BASE_FILE = new ApplicationHome(FileUploadUtils.class).getDir().getParentFile()
+            .getParentFile().getAbsolutePath() + "\\src\\main\\resources\\upload";
 
 
 
@@ -74,15 +77,15 @@ public class FileUploadUtils {
         assertAllowed(file, allowedExtension);
 
         String fileName = encodingFileName(file);
+        String dirName = fileName.substring(0, fileName.indexOf("."));
 
-        File desc = getAbsoluteFile(baseDir, fileName);
+        File desc = getAbsoluteFile(baseDir + "\\" + dirName, fileName);
         file.transferTo(desc);
         return desc.getAbsolutePath();
     }
 
     private static final File getAbsoluteFile(String uploadDir, String fileName) throws IOException {
         File desc = new File(uploadDir + File.separator + fileName);
-
         if (!desc.getParentFile().exists()) {
             desc.getParentFile().mkdirs();
         }

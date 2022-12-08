@@ -18,7 +18,7 @@
 
     <insert id="insert" parameterType="fileUploadEntity">
         insert into file_upload (location, name, old_name, description, create_time, update_time)
-        values (#{search.location}, #{search.name}, #{search.oldName}, #{search.description}, #{search.create_time}, #{search.update_time})
+        values (#{search.location}, #{search.name}, #{search.oldName}, #{search.description}, now(), now())
     </insert>
 
     <delete id="deleteById">
@@ -34,9 +34,12 @@
         file.old_name,
         file.description,
         file.create_time,
-        file.update_time,
+        file.update_time
         from file_upload file
         where 1=1
+        <if test="search.id!=null and search.id!=''">
+            AND file.id = #{search.id}
+        </if>
         <if test="search.name!=null and search.name!=''">
             AND file.name like concat('%', #{search.name}, '%')
         </if>
