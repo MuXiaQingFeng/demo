@@ -3,6 +3,7 @@ package com.hanser.vo.project;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class ProjectReq {
@@ -65,6 +66,8 @@ public class ProjectReq {
      * 管理员code
      */
     private String staffCode;
+
+    private List<String> fileList;
 
 
     private String ids;

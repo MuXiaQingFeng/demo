@@ -15,7 +15,7 @@ public interface ProjectMapper {
 
     int updateProject(@Param("search")ProjectReq search);
 
-    int addProject(@Param("search")ProjectReq search);
+    Project addProject(@Param("search")ProjectReq search);
 
     int deleteProject(int id);
 }

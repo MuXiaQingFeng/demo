@@ -7,6 +7,7 @@ import com.hanser.vo.project.ProjectReq;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface FileMapper {
     int insert(@Param("search")FileReq search);
 
     int deleteById(int id);
+
+    int updateFileByName(@Param("name")String name, @Param("projectId")int projectId);
 }

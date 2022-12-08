@@ -17,8 +17,8 @@
 
 
     <insert id="insert" parameterType="fileUploadEntity">
-        insert into file_upload (location, name, old_name, description, create_time, update_time)
-        values (#{search.location}, #{search.name}, #{search.oldName}, #{search.description}, now(), now())
+        insert into file_upload (location, name, old_name, description, create_time, update_time, project_id)
+        values (#{search.location}, #{search.name}, #{search.oldName}, #{search.description}, now(), now(), 1)
     </insert>
 
     <delete id="deleteById">
@@ -34,7 +34,8 @@
         file.old_name,
         file.description,
         file.create_time,
-        file.update_time
+        file.update_time,
+        file.project_id
         from file_upload file
         where 1=1
         <if test="search.id!=null and search.id!=''">
@@ -48,4 +49,10 @@
         </if>
         GROUP BY file.id
     </select>
+
+    <update id="updateFileByName">
+        update 'file_upload'
+        set project_id = #{projectId}
+        where name = #{name}
+    </update>
 </mapper>

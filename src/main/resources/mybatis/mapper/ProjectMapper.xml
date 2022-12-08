@@ -25,7 +25,7 @@
         update `project`
         set project_code = #{search.projectCode},
             project_name = #{search.projectName},
-            price       = #{search.price},
+            price = #{search.price},
             amount = #{search.amount},
             provider_id = #{search.providerId},
             provider_code = #{search.providerCode},

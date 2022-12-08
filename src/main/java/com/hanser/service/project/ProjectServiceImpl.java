@@ -1,11 +1,14 @@
 package com.hanser.service.project;
 
+import com.hanser.mapper.file.FileMapper;
 import com.hanser.mapper.project.ProjectMapper;
 import com.hanser.mapper.provider.ProviderMapper;
 import com.hanser.mapper.staff.StaffMapper;
+import com.hanser.pojo.FileUploadEntity;
 import com.hanser.pojo.Project;
 import com.hanser.pojo.Provider;
 import com.hanser.pojo.Staff;
+import com.hanser.vo.file.FileReq;
 import com.hanser.vo.project.ProjectReq;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,8 @@ public class ProjectServiceImpl implements ProjectService {
     StaffMapper staffMapper;
     @Resource
     ProviderMapper providerMapper;
+    @Resource
+    FileMapper fileMapper;
 
     @Override
     public boolean addProject(ProjectReq search) {
@@ -44,7 +49,18 @@ public class ProjectServiceImpl implements ProjectService {
         }
         String projectCode = recountNew((int)((Math.random()*9+1)*10000000));
         search.setProjectCode(projectCode);
-        return projectMapper.addProject(search) != 0;
+        Project project = projectMapper.addProject(search);
+        if (search.getFileList().size()>0) {
+            for (String s : search.getFileList()) {
+                FileReq fileReq = new FileReq();
+                fileReq.setName(s);
+                List<FileUploadEntity> fileUploadEntities = fileMapper.selectList(fileReq);
+                if (fileUploadEntities.size() == 1) {
+                    fileMapper.updateFileByName(fileUploadEntities.get(0).getName(), project.getId());
+                }
+            }
+        }
+        return project != null;
     }
 
     @Override
