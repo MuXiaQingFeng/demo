@@ -17,8 +17,6 @@ class DemoApplicationTests {
     @Resource
     LeaderMapper mapper1;
     @Resource
-    PurchasingController controller;
-    @Resource
     ProviderService service;
     @Resource
     Provider provider;
@@ -34,7 +32,7 @@ class DemoApplicationTests {
         map.put("isUp5",true);
         map.put("byDate",new Date());
         System.out.println(purchasingController.addOrder(20220927,"hanser","han",20,true,new Date()));*/
-        System.out.println(mapper.login("采购部门1", "010217"));
+//        System.out.println(mapper.login("采购部门1", "010217"));
 
     }
 

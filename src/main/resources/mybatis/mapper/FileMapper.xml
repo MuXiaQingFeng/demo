@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanser.mapper.file.FileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="FileMap" type="fileUploadEntity">
+        <result column="id" property="id" />
+        <result column="location" property="location" />
+        <result column="name" property="name" />
+        <result column="old_name" property="oldName" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+
+    <insert id="insert" parameterType="fileUploadEntity">
+        insert into file_upload (location, name, old_name, description, create_time, update_time)
+        values (#{search.location}, #{search.name}, #{search.oldName}, #{search.description}, #{search.create_time}, #{search.update_time})
+    </insert>
+
+    <delete id="deleteById">
+        delete
+        from file_upload
+        where id = #{id}
+    </delete>
+
+    <select id="selectList" resultType="fileUploadEntity">
+        select file.id,
+        file.location,
+        file.name,
+        file.old_name,
+        file.description,
+        file.create_time,
+        file.update_time,
+        from file_upload file
+        where 1=1
+        <if test="search.name!=null and search.name!=''">
+            AND file.name like concat('%', #{search.name}, '%')
+        </if>
+        <if test="search.oldName!=null and search.oldName!=''">
+            AND  file.old_name like concat('%', #{search.oldName}, '%')
+        </if>
+        GROUP BY file.id
+    </select>
+</mapper>

@@ -13,7 +13,7 @@ public interface StaffMapper {
     //员工登录
     Staff login(@Param("code") String code,@Param("password") String password);
     //通过指定条件得到员工列表
-    List getStaff();
+    List<Staff> getStaff();
 
     Staff getStaffById(@Param("id") int id);
     //增加员工账号

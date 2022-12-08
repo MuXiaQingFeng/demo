@@ -3,23 +3,21 @@ package com.hanser.mapper.purchasing;
 import com.hanser.pojo.Order;
 import com.hanser.pojo.Provider;
 import com.hanser.pojo.Report;
-import com.hanser.pojo.Staff;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
 @Mapper
 @Repository
-public interface PurchasingMapper {
+public interface PurchasingMapper{
     //?导出excel，将当前页面的众多信息导出成excel形式
-    File outputFiles();
+//    File outputFiles();
 
     //...模块一查询，查供应商表，实现模糊查询(根据供应商名字的模糊查询，状态是可选（0:被加入了黑名单，1：待评核，2：待审批 3：合格）)
-    List getProvider1(HashMap map);
+    List<Provider> getProvider1(HashMap map);
 
     //模块一，指定对应id的供应商合格,把状态设为status
     int updateProviderStatus1(@Param("pid") int id,@Param("providerStatus") int status);

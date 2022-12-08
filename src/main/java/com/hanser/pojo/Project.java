@@ -1,8 +1,5 @@
 package com.hanser.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,14 +13,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-@TableName("project")
 public class Project implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 項目id
      */
-    @TableId(type = IdType.AUTO)
     private int id;
     /**
      * 項目編碼

@@ -3,9 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hanser.mapper.staff.StaffMapper">
+    <resultMap id="StaffMap" type="staff">
+        <result column="id" property="id" />
+        <result column="department_id" property="departmentId" />
+        <result column="staff_code" property="staffCode" />
+        <result column="staff_password" property="staffPassword" />
+        <result column="grade" property="grade" />
+        <result column="type" property="type" />
+    </resultMap>
+
     <select id="login"  resultType="staff">
-        select *
-        from staff s left join department d on d.id = s.department_id
+        select s.id,
+               s.department_id,
+               s.staff_code,
+               s.staff_password,
+               s.grade,
+               s.type
+        from staff s
+        left join department d on d.id = s.department_id
         where staff_code = #{code};
     </select>
 
