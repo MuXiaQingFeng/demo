@@ -19,7 +19,7 @@
                s.staff_password,
                s.grade,
                s.type,
-               d.department
+               d.department_name
         from staff s
         left join department d on d.id = s.department_id
         where staff_code = #{code};
