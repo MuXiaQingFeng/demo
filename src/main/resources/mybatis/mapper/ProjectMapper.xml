@@ -19,6 +19,10 @@
         <result column="end_date" property="endDate" />
         <result column="staff_id" property="staffId" />
         <result column="staff_code" property="staffCode" />
+        <result column="purchase_mode" property="purchaseMode" />
+        <result column="payment_process" property="paymentProcess" />
+        <result column="project_implement_process" property="projectImplementProcess" />
+        <result column="department_name" property="departmentName" />
     </resultMap>
 
     <update id="updateProject" parameterType="project">
@@ -35,15 +39,18 @@
             end_date = #{search.endDate},
             staff_id = #{search.staffId},
             staff_code = #{search.staffCode},
-            department_id = #{search.departmentId}
+            department_id = #{search.departmentId},
+            purchase_mode = #{search.purchaseMode},
+            payment_process = #{search.paymentProcess},
+            project_implement_process = #{search.projectImplementProcess}
         where id = #{search.id}
     </update>
 
     <insert id="addProject" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="project">
         insert into project (project_code, project_name, price, amount, provider_id, provider_code, provider_name, creation_date, by_date,
-                                  end_date,staff_id, staff_code, department_id)
+                                  end_date,staff_id, staff_code, department_id, purchase_mode, payment_process, project_implement_process)
         values (#{search.projectCode}, #{search.projectName}, #{search.price}, #{search.amount}, #{search.providerId}, #{search.providerCode}, #{search.providerName}, now()
-               , #{search.byDate}, #{search.endDate},  #{search.staffId}, #{search.staffCode}
+               , #{search.byDate}, #{search.endDate},  #{search.staffId}, #{search.staffCode}, #{search.purchaseMode}, #{search.paymentProcess}, #{search.projectImplementProcess}
                , #{search.departmentId})
     </insert>
 
@@ -67,13 +74,27 @@
         pro.end_date,
         pro.staff_id,
         pro.staff_code,
-        pro.department_id
+        pro.department_id,
+        dep.department_name,
+        pro.payment_process,
+        pro.project_implement_process,
+        pro.purchase_mode
         from project pro
         left join staff stf on pro.staff_id = stf.id
+        left join department dep on pro.department_id = dep.id
         left join provider pvd on pro.provider_id = pvd.id
         where 1=1
         <if test="search.projectName!=null and search.projectName!=''">
             AND pro.project_name like concat('%', #{search.projectName}, '%')
+        </if>
+        <if test="search.projectImplementProcess!=null and search.projectImplementProcess!=''">
+            AND pro.project_implement_process like concat('%', #{search.projectImplementProcess}, '%')
+        </if>
+        <if test="search.purchaseMode!=null and search.purchaseMode!=''">
+            AND pro.purchase_mode like concat('%', #{search.purchaseMode}, '%')
+        </if>
+        <if test="search.paymentProcess!=null and search.paymentProcess!=''">
+            AND pro.payment_process like concat('%', #{search.paymentProcess}, '%')
         </if>
         <if test="search.departmentId!=null and search.departmentId!=''">
             AND  pro.department_id = #{search.departmentId}

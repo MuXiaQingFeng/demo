@@ -72,6 +72,10 @@ public class Project implements Serializable {
      * 部门Id
      */
     private int departmentId;
+    /**
+     * 管理部门名称
+     */
+    private String departmentName;
 
     /**
      * 采购方式(询比价、招投标)
@@ -87,6 +91,7 @@ public class Project implements Serializable {
      * 项目实施进度(每月更新)
      */
     private String projectImplementProcess;
+
 
     private String ids;
 }
