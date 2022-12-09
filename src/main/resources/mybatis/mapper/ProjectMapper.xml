@@ -47,10 +47,9 @@
     </update>
 
     <insert id="addProject" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="project">
-        insert into project (project_code, project_name, price, amount, provider_id, provider_code, provider_name, creation_date, by_date,
-                                  end_date,staff_id, staff_code, department_id, purchase_mode, payment_process, project_implement_process)
+        insert into project (project_code, project_name, price, amount, provider_id, provider_code, provider_name, creation_date, by_date,staff_id, staff_code, department_id, purchase_mode, payment_process, project_implement_process)
         values (#{search.projectCode}, #{search.projectName}, #{search.price}, #{search.amount}, #{search.providerId}, #{search.providerCode}, #{search.providerName}, now()
-               , #{search.byDate}, #{search.endDate},  #{search.staffId}, #{search.staffCode}, #{search.purchaseMode}, #{search.paymentProcess}, #{search.projectImplementProcess}
+               , #{search.byDate}, #{search.staffId}, #{search.staffCode}, #{search.purchaseMode}, #{search.paymentProcess}, #{search.projectImplementProcess}
                , #{search.departmentId})
     </insert>
 
