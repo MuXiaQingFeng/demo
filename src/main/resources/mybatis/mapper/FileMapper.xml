@@ -50,9 +50,9 @@
         GROUP BY file.id
     </select>
 
-    <update id="updateFileByName">
-        update 'file_upload'
+    <update id="updateFileById">
+        update file_upload
         set project_id = #{projectId}
-        where name = #{name}
+        where id = #{id}
     </update>
 </mapper>

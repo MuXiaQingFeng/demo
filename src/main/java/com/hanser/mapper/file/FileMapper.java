@@ -20,5 +20,5 @@ public interface FileMapper {
 
     int deleteById(int id);
 
-    int updateFileByName(@Param("name")String name, @Param("projectId")int projectId);
+    int updateFileById(@Param("id")int id, @Param("projectId")int projectId);
 }

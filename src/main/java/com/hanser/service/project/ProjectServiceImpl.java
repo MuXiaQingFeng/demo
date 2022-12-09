@@ -53,18 +53,18 @@ public class ProjectServiceImpl implements ProjectService {
         }
         String projectCode = recountNew((int)((Math.random()*9+1)*10000000));
         search.setProjectCode(projectCode);
-        Project project = projectMapper.addProject(search);
+        projectMapper.addProject(search);
         if (search.getFileList().size()>0) {
             for (String s : search.getFileList()) {
                 FileReq fileReq = new FileReq();
-                fileReq.setName(s);
+                fileReq.setOldName(s);
                 List<FileUploadEntity> fileUploadEntities = fileMapper.selectList(fileReq);
                 if (fileUploadEntities.size() == 1) {
-                    fileMapper.updateFileByName(fileUploadEntities.get(0).getName(), project.getId());
+                    fileMapper.updateFileById(fileUploadEntities.get(0).getId(), search.getId());
                 }
             }
         }
-        return project != null;
+        return search.getId() != 0;
     }
 
     @Override
