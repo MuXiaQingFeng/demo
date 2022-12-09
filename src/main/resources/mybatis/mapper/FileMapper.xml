@@ -47,6 +47,9 @@
         <if test="search.oldName!=null and search.oldName!=''">
             AND  file.old_name like concat('%', #{search.oldName}, '%')
         </if>
+        <if test="search.projectId!=null and search.projectId!=''">
+            AND file.project_id = #{search.projectId}
+        </if>
         GROUP BY file.id
     </select>
 

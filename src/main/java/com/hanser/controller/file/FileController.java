@@ -3,7 +3,6 @@ package com.hanser.controller.file;
 import com.hanser.service.file.FileUploadService;
 import com.hanser.util.JsonUtils;
 import com.hanser.vo.file.FileReq;
-import com.hanser.vo.project.ProjectReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

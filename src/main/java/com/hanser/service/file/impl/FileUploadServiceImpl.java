@@ -80,7 +80,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public List<FileUploadEntity> getFileList(FileReq search) {
-        if (search.getId()==0&&(search.getName()==null||search.getName().equals(""))&&(search.getOldName()==null||search.getOldName().equals(""))) {
+        if (search.getProjectId()==0&&(search.getName()==null||search.getName().equals(""))&&(search.getOldName()==null||search.getOldName().equals(""))) {
             return null;
         }
         return uploadMapper.selectList(search);

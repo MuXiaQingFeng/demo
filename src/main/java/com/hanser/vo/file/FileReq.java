@@ -24,4 +24,6 @@ public class FileReq {
     private Date createTime;
 
     private Date updateTime;
+
+    private int projectId;
 }
