@@ -21,7 +21,7 @@ public class Project implements Serializable {
      */
     private int id;
     /**
-     * 項目編碼
+     * 项目编码
      */
     private String projectCode;
     /**
@@ -33,31 +33,31 @@ public class Project implements Serializable {
      */
     private BigDecimal price;
     /**
-     * 项目金额
+     * 合同金额
      */
     private BigDecimal amount;
     /**
-     * 中标产品id
+     * 实施单位id
      */
     private int providerId;
     /**
-     * 中标产品编码
+     * 实施单位编码
      */
     private String providerCode;
     /**
-     * 中标产品名称
+     * 实施单位名称
      */
     private String providerName;
     /**
-     * 项目开始日期
+     * 合同签订时间
      */
     private String creationDate;
     /**
-     * 质保金结束日期
+     *
      */
     private String byDate;
     /**
-     * 项目结束日期
+     * 验收时间(返质保金用)
      */
     private String endDate;
     /**
@@ -72,6 +72,21 @@ public class Project implements Serializable {
      * 部门Id
      */
     private int departmentId;
+
+    /**
+     * 采购方式(询比价、招投标)
+     */
+    private String purchaseMode;
+
+    /**
+     * 付款进度
+     */
+    private String paymentProcess;
+
+    /**
+     * 项目实施进度(每月更新)
+     */
+    private String projectImplementProcess;
 
     private String ids;
 }

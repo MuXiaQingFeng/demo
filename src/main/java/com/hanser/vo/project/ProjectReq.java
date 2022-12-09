@@ -67,6 +67,22 @@ public class ProjectReq {
      */
     private String staffCode;
 
+    /**
+     * 采购方式(询比价、招投标)
+     */
+    private String purchaseMode;
+
+    /**
+     * 付款进度
+     */
+    private String paymentProcess;
+
+    /**
+     * 项目实施进度(每月更新)
+     */
+    private String projectImplementProcess;
+
+
     private List<String> fileList;
 
 
